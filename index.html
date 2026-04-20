@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Anteraja Bulk Sticker - Pro Edition</title>
+    
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700;900&display=swap" rel="stylesheet">
+    
+    <style>
+        :root { --magenta: #E2197C; --gold: #FFD25E; --ui-bg: #f4f7f6; }
+        * { box-sizing: border-box; -webkit-font-smoothing: antialiased; }
+        body { font-family: 'Inter', sans-serif; background: var(--ui-bg); margin: 0; padding: 15px; }
+        
+        .container { max-width: 800px; margin: 0 auto; padding-bottom: 120px; }
+        .card { background: white; border-radius: 20px; padding: 25px; box-shadow: 0 4px 20px rgba(0,0,0,0.05); margin-bottom: 20px; }
+        
+        /* UI Input */
+        .staging-header { background: linear-gradient(135deg, var(--magenta), #a01258); padding: 25px; border-radius: 15px; color: white; margin-bottom: 20px; }
+        .staging-header label { display: block; font-size: 11px; font-weight: 800; opacity: 0.8; margin-bottom: 8px; letter-spacing: 1px; }
+        .staging-header input { width: 100%; padding: 15px; border: none; border-radius: 10px; font-size: 20px; font-weight: 800; text-align: center; color: #333; }
+
+        .grid-inputs { display: grid; grid-template-columns: repeat(auto-fill, minmax(140px, 1fr)); gap: 12px; }
+        .input-item { background: white; padding: 12px; border-radius: 12px; border: 1px solid #e0e0e0; position: relative; }
+        .input-item label { font-size: 10px; font-weight: 700; color: #999; display: block; margin-bottom: 5px; }
+        .input-item input { width: 100%; border: none; border-bottom: 2px solid #f0f0f0; padding: 5px 0; font-size: 16px; font-weight: 800; outline: none; }
+        .input-item input:focus { border-color: var(--magenta); }
+        .btn-del { position: absolute; top: 5px; right: 5px; background: none; border: none; color: #ff5252; cursor: pointer; font-size: 14px; }
+
+        /* Actions Bar */
+        .action-bar { position: fixed; bottom: 0; left: 0; right: 0; background: white; padding: 20px; box-shadow: 0 -10px 30px rgba(0,0,0,0.1); display: flex; flex-direction: column; gap: 10px; z-index: 1000; }
+        .btn { padding: 16px; border: none; border-radius: 12px; font-weight: 800; cursor: pointer; transition: 0.2s; font-size: 14px; }
+        .btn-add { background: #333; color: white; }
+        .btn-print { background: var(--magenta); color: white; box-shadow: 0 8px 15px rgba(226, 25, 124, 0.3); }
+
+        /* STICKER DESIGN (A6 Landscape) */
+        .sticker-canvas {
+            width: 148mm; height: 105mm; background: var(--magenta); position: relative; overflow: hidden; color: white;
+            padding: 8mm 10mm; display: flex; flex-direction: column;
+        }
+        .logo-img { position: absolute; top: 8mm; right: 8mm; height: 14mm; }
+        .delivery-badge { border: 3px solid white; padding: 4px 22px; border-radius: 50px; font-weight: 900; font-size: 24px; display: inline-block; }
+        .tagline { font-size: 8px; color: var(--gold); font-weight: 700; margin-top: 5px; letter-spacing: 0.5px; }
+        .staging-display { font-size: 22px; font-weight: 700; text-transform: uppercase; }
+        .unit-title { font-size: 40px; font-weight: 900; margin: 12mm 0 4mm 0; z-index: 10; }
+        
+        .grid-row { display: flex; gap: 6px; z-index: 10; }
+        .grid-cell { width: 22mm; height: 32mm; background: white; border-radius: 8px; display: flex; align-items: center; justify-content: center; color: #1d1d1d; font-size: 80px; font-weight: 700; }
+        .satria-img { position: absolute; bottom: -2mm; right: 2mm; height: 70mm; z-index: 5; }
+
+        /* PRINT SETTINGS (A3) */
+        #print-container { position: absolute; left: -9999px; }
+        .a3-page { width: 297mm; height: 420mm; display: grid; grid-template-columns: 1fr 1fr; grid-template-rows: repeat(4, 1fr); background: white; }
+        .print-cell { display: flex; align-items: center; justify-content: center; border: 0.1mm solid #f0f0f0; }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <div class="card" style="text-align:center;">
+        <img src="BLHR02.png" style="height:40px;" alt="Logo Anteraja">
+        <h2 style="margin:10px 0 0 0; letter-spacing:-1px;">STICKER GENERATOR PRO</h2>
+    </div>
+
+    <div class="staging-header">
+        <label>NAMA STAGING (AUTO-APPLY)</label>
+        <input type="text" id="global-staging" value="BLHR0" placeholder="Contoh: BLHR0">
+    </div>
+
+    <div id="input-list" class="grid-inputs"></div>
+
+    <div class="action-bar">
+        <div style="display:grid; grid-template-columns: 1fr 1fr; gap:10px;">
+            <button class="btn btn-add" onclick="addBoxes(1)">+ TAMBAH 1</button>
+            <button class="btn btn-add" style="background:#666" onclick="addBoxes(8)">+ TAMBAH 8</button>
+        </div>
+        <button class="btn btn-print" id="download-btn" onclick="generatePDF()">📥 DOWNLOAD PDF (A3)</button>
+    </div>
+</div>
+
+<div id="print-container"></div>
+
+<script>
+    let boxCount = 0;
+
+    function addBoxes(n) {
+        const list = document.getElementById('input-list');
+        for(let i=0; i<n; i++) {
+            boxCount++;
+            const div = document.createElement('div');
+            div.className = 'input-item';
+            div.id = `box-${boxCount}`;
+            div.innerHTML = `
+                <button class="btn-del" onclick="document.getElementById('box-${boxCount}').remove()">✕</button>
+                <label>KODE UNIT #${boxCount}</label>
+                <input type="text" class="unit-input" placeholder="...">
+            `;
+            list.appendChild(div);
+        }
+    }
+
+    function createStickerElement(staging, code) {
+        const div = document.createElement('div');
+        div.className = 'sticker-canvas';
+        const chars = code.toUpperCase().split('');
+        const gridHtml = chars.map(c => `<div class="grid-cell">${c}</div>`).join('');
+
+        div.innerHTML = `
+            <img src="BLHR02.png" class="logo-img">
+            <div style="display:flex; justify-content:space-between; z-index:10; position:relative;">
+                <div>
+                    <div class="delivery-badge">DELIVERY</div>
+                    <div class="tagline">#PastiBawaHepi • #JadiOrangBaik</div>
+                </div>
+                <div class="staging-display">${staging}</div>
+            </div>
+            <div class="unit-title">UNIT ZONE</div>
+            <div class="grid-row">${gridHtml || '<div class="grid-cell">&nbsp;</div>'}</div>
+            <img src="BLHR01.png" class="satria-img">
+        `;
+        return div;
+    }
+
+    async function generatePDF() {
+        const staging = document.getElementById('global-staging').value;
+        const codes = Array.from(document.querySelectorAll('.unit-input')).map(i => i.value).filter(v => v.trim() !== "");
+        
+        if(codes.length === 0) return alert("Silakan isi kode Unit Zone terlebih dahulu.");
+
+        const btn = document.getElementById('download-btn');
+        btn.innerText = "⏳ MEMPROSES HALAMAN...";
+        btn.disabled = true;
+
+        const { jsPDF } = window.jspdf;
+        const pdf = new jsPDF({ orientation: 'p', unit: 'mm', format: 'a3' });
+        const container = document.getElementById('print-container');
+
+        // Loop per 8 sticker (Pagination)
+        for (let i = 0; i < codes.length; i += 8) {
+            container.innerHTML = '';
+            const page = document.createElement('div');
+            page.className = 'a3-page';
+            
+            const chunk = codes.slice(i, i + 8);
+            for (let j = 0; j < 8; j++) {
+                const cell = document.createElement('div');
+                cell.className = 'print-cell';
+                if(chunk[j]) cell.appendChild(createStickerElement(staging, chunk[j]));
+                page.appendChild(cell);
+            }
+            
+            container.appendChild(page);
+            const canvas = await html2canvas(page, { scale: 2, useCORS: true });
+            
+            if (i > 0) pdf.addPage();
+            pdf.addImage(canvas.toDataURL('image/jpeg', 0.95), 'JPEG', 0, 0, 297, 420);
+        }
+
+        pdf.save(`Sticker_Anteraja_${staging}.pdf`);
+        btn.innerText = "📥 DOWNLOAD PDF (A3)";
+        btn.disabled = false;
+        container.innerHTML = '';
+    }
+
+    // Start with 8 default boxes
+    addBoxes(8);
+</script>
+</body>
+</html>

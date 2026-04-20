@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Anteraja Studio Pro - Final Edition</title>
+    <title>Anteraja Studio Pro - Final Production</title>
     
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
@@ -25,7 +25,6 @@
         .zone-card { background: white; padding: 15px; border-radius: 16px; border: 1px solid #e2e8f0; position: relative; }
         .zone-card input { width: 100%; border: none; border-bottom: 2px solid #f1f5f9; padding: 8px 0; font-size: 16px; font-weight: 800; outline: none; text-transform: uppercase; }
 
-        /* Floating Nav */
         .nav-bar { position: fixed; bottom: 0; left: 0; right: 0; background: rgba(255,255,255,0.9); backdrop-filter: blur(12px); padding: 20px; border-top: 1px solid #e2e8f0; z-index: 1000; display: flex; flex-direction: column; gap: 10px; }
         .btn { padding: 16px; border: none; border-radius: 14px; font-weight: 800; cursor: pointer; transition: 0.2s; font-size: 14px; }
         .btn-add { background: #f1f5f9; color: #475569; }
@@ -44,13 +43,16 @@
         .branding-group { position: absolute; top: 8mm; right: 8mm; display: flex; flex-direction: column; align-items: flex-end; z-index: 100; }
         .logo-white-box { background: white; padding: 6px 14px; border-radius: 10px; display: flex; align-items: center; justify-content: center; margin-bottom: 6px; }
         .logo-img { height: 9mm; }
-        .staging-name { color: var(--gold); font-weight: 800; font-size: 18px; text-transform: uppercase; text-shadow: 0 2px 4px rgba(0,0,0,0.2); }
+        .staging-name { color: var(--gold); font-weight: 800; font-size: 18px; text-transform: uppercase; }
 
-        /* Mascot: Background Layer (Paling Belakang) */
+        /* Mascot: Centered Background Layer (Kurangi Transparansi / Lebih Jelas) */
         .mascot-layer {
-            position: absolute; bottom: -8mm; right: -5mm;
-            width: 95mm; height: 95mm; opacity: 0.45; /* Transparansi gambar */
-            z-index: 1; /* Di bawah grid-row */
+            position: absolute; 
+            top: 50%; left: 50%;
+            transform: translate(-50%, -50%); /* Center exact */
+            width: 100mm; height: 100mm; 
+            opacity: 0.6; /* Nilai transparansi dikurangi agar lebih jelas */
+            z-index: 1;
         }
         .mascot-layer img { width: 100%; height: 100%; object-fit: contain; }
 
@@ -59,7 +61,6 @@
         
         .unit-zone-title { font-size: 44px; font-weight: 800; margin: 12mm 0 4mm 0; position: relative; z-index: 10; letter-spacing: -1px; }
 
-        /* Kotak Huruf: Solid (Tidak Transparan) */
         .grid-row { display: flex; gap: 8px; position: relative; z-index: 10; }
         .grid-cell {
             min-width: 24mm; height: 36mm; background: white; border-radius: 10px;
@@ -68,10 +69,21 @@
             box-shadow: 0 8px 15px rgba(0,0,0,0.15);
         }
 
-        /* PRINT CONFIG */
+        /* PRINT CONFIG (A3 PORTRAIT) */
         #print-temp { position: absolute; left: -9999px; }
-        .a3-page { width: 297mm; height: 420mm; display: grid; grid-template-columns: 1fr 1fr; grid-template-rows: repeat(4, 1fr); background: white; }
-        .print-cell { display: flex; align-items: center; justify-content: center; }
+        .a3-page { 
+            width: 297mm; height: 420mm; 
+            display: grid; 
+            grid-template-columns: 1fr 1fr; 
+            grid-template-rows: repeat(4, 1fr); 
+            background: #ffffff;
+            gap: 0.1mm; /* Jarak antar stiker untuk memotong */
+            padding: 0.5mm;
+        }
+        .print-cell { 
+            display: flex; align-items: center; justify-content: center; 
+            border: 0.05mm solid #eeeeee; /* Garis bantu potong sangat tipis */
+        }
     </style>
 </head>
 <body>
@@ -79,12 +91,12 @@
 <div class="container">
     <div class="dashboard-header">
         <h1 style="margin:0; font-weight:800; letter-spacing:-1px;">Anteraja <span style="color:var(--magenta)">Studio</span></h1>
-        <p style="color:#64748b; font-size:13px; font-weight:600; margin-top:4px;">Sticker Operations Leader Dashboard</p>
+        <p style="color:#64748b; font-size:13px; font-weight:600; margin-top:4px;">Sticker Production Tools</p>
     </div>
 
     <div class="hero-input">
-        <label>NAMA STAGING (AUTO-APPLY)</label>
-        <input type="text" id="global-stg" value="BLHR0" placeholder="MASUKKAN NAMA STAGING...">
+        <label>NAMA STAGING (AUTO-UPDATE)</label>
+        <input type="text" id="global-stg" value="BLHR0">
     </div>
 
     <div id="input-list" class="zone-grid"></div>
@@ -92,9 +104,9 @@
     <div class="nav-bar">
         <div style="display:grid; grid-template-columns:1fr 1fr; gap:12px;">
             <button class="btn btn-add" onclick="addSlot(1)">+ TAMBAH 1</button>
-            <button class="btn btn-add" onclick="addSlot(8)">+ TAMBAH 8 (A3)</button>
+            <button class="btn btn-add" onclick="addSlot(8)">+ TAMBAH 8 (1 HALAMAN)</button>
         </div>
-        <button class="btn btn-print" id="btn-gen" onclick="generatePDF()">📥 DOWNLOAD PDF SEMUA HALAMAN</button>
+        <button class="btn btn-print" id="btn-gen" onclick="generatePDF()">📥 DOWNLOAD PDF A3 PRODUKSI</button>
     </div>
 </div>
 
@@ -111,7 +123,6 @@
             div.id = `item-${boxId}`;
             div.innerHTML = `
                 <button style="position:absolute; top:6px; right:6px; border:none; background:none; color:#ef4444; font-weight:bold; cursor:pointer;" onclick="document.getElementById('item-${boxId}').remove()">✕</button>
-                <label style="font-size:9px; font-weight:700; color:#94a3b8; display:block; margin-bottom:4px;">SLOT #${boxId}</label>
                 <input type="text" class="zone-val" placeholder="KODE...">
             `;
             list.appendChild(div);
@@ -143,10 +154,10 @@
     async function generatePDF() {
         const staging = document.getElementById('global-stg').value;
         const codes = Array.from(document.querySelectorAll('.zone-val')).map(i => i.value).filter(v => v !== "");
-        if(codes.length === 0) return alert("Silakan isi kode unit zona!");
+        if(codes.length === 0) return alert("Silakan isi kode zona!");
 
         const btn = document.getElementById('btn-gen');
-        btn.innerText = "⏳ RENDERING HIGH-QUALITY PDF...";
+        btn.innerText = "⏳ RENDERING PDF...";
         btn.disabled = true;
 
         const { jsPDF } = window.jspdf;
@@ -170,13 +181,12 @@
             pdf.addImage(canvas.toDataURL('image/jpeg', 0.95), 'JPEG', 0, 0, 297, 420);
         }
 
-        pdf.save(`Stickers_Anteraja_${staging}.pdf`);
-        btn.innerText = "📥 DOWNLOAD PDF SEMUA HALAMAN";
+        pdf.save(`Produksi_Sticker_${staging}.pdf`);
+        btn.innerText = "📥 DOWNLOAD PDF A3 PRODUKSI";
         btn.disabled = false;
         temp.innerHTML = '';
     }
     addSlot(8);
 </script>
 </body>
-    </html>
-    
+</html>

@@ -3,12 +3,12 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
-    <title>Anteraja Studio Pro — Global Edition</title>
+    <title>Anteraja Studio Pro — Ultimate Edition</title>
     
     <!-- Library & Fonts -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300;14..32,500;14..32,700;14..32,800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,400;14..32,600;14..32,700;14..32,800;14..32,900&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     
     <style>
@@ -104,7 +104,7 @@
             letter-spacing: 1px;
         }
 
-        /* grid kode zone — card modern */
+        /* zone grid modern */
         .zone-grid {
             display: grid;
             grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
@@ -168,7 +168,7 @@
             box-shadow: 0 0 0 3px rgba(226,25,124,0.2);
         }
 
-        /* navigation bar glassmorphism */
+        /* navigation bar */
         .nav-bar {
             position: fixed;
             bottom: 0;
@@ -226,44 +226,39 @@
             font-weight: 500;
         }
 
-        /* ========= STICKER PREMIUM DESIGN (A6 landscape) ========= */
+        /* ============================================
+           STICKER DESIGN PREMIUM — GAYA BARU
+           Warna Font: PUTIH, KUNING, HITAM (dalam box)
+           Logo: BLHR02.png (atas kanan), BLHR01.png (siluet tengah)
+        ============================================ */
         .sticker-canvas {
             width: 100%;
             height: 100%;
-            background: radial-gradient(circle at 20% 30%, var(--magenta), #9E124E);
+            background: linear-gradient(135deg, var(--magenta) 0%, #9E124E 100%);
             position: relative;
             display: flex;
             flex-direction: column;
-            padding: 9mm 8mm;
+            padding: 10mm 9mm;
             overflow: hidden;
             font-family: 'Inter', sans-serif;
             box-shadow: 0 10px 20px rgba(0,0,0,0.1);
         }
 
-        /* decorative abstract shapes */
+        /* Background pattern halus */
         .sticker-canvas::before {
             content: "";
             position: absolute;
-            top: -30%;
-            right: -20%;
+            top: -20%;
+            right: -15%;
             width: 180px;
             height: 180px;
-            background: rgba(255, 210, 94, 0.15);
+            background: rgba(255, 210, 94, 0.12);
             border-radius: 50%;
             pointer-events: none;
         }
-        .sticker-canvas::after {
-            content: "⚡";
-            position: absolute;
-            bottom: 10px;
-            left: 12px;
-            font-size: 42px;
-            opacity: 0.2;
-            font-family: monospace;
-            pointer-events: none;
-        }
 
-        /* logo & brand area (tanpa gambar eksternal) */
+        /* ===== LOGO AREA ===== */
+        /* Logo atas kanan: BLHR02.png */
         .branding-group {
             position: absolute;
             top: 8mm;
@@ -272,27 +267,26 @@
             flex-direction: column;
             align-items: flex-end;
             gap: 6px;
-            z-index: 8;
+            z-index: 10;
         }
         .logo-box {
             background: white;
             border-radius: 14px;
-            padding: 4px 14px;
+            padding: 5px 12px;
             display: flex;
             align-items: center;
-            gap: 8px;
-            font-weight: 800;
-            font-size: 16px;
-            color: var(--magenta);
-            box-shadow: 0 6px 12px rgba(0,0,0,0.1);
+            justify-content: center;
+            box-shadow: 0 6px 12px rgba(0,0,0,0.15);
         }
-        .logo-box i {
-            font-size: 18px;
+        .logo-img-top {
+            height: 28px;
+            max-width: 100px;
+            object-fit: contain;
         }
         .staging-name {
             font-weight: 800;
-            font-size: 18px;
-            background: rgba(0,0,0,0.3);
+            font-size: 16px;
+            background: rgba(0,0,0,0.4);
             backdrop-filter: blur(4px);
             padding: 4px 12px;
             border-radius: 40px;
@@ -300,41 +294,60 @@
             letter-spacing: 1px;
         }
 
+        /* ===== MASCOT / SILUET (BLHR01.png) ===== */
+        .mascot-layer {
+            position: absolute;
+            bottom: -4mm;
+            left: -8mm;
+            width: 90px;
+            height: 90px;
+            opacity: 0.5;
+            z-index: 2;
+            pointer-events: none;
+        }
+        .mascot-layer img {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+        }
+
         /* delivery pill */
         .delivery-pill {
             border: 2.5px solid white;
-            padding: 4px 24px;
+            padding: 5px 24px;
             border-radius: 60px;
             font-weight: 800;
-            font-size: 22px;
+            font-size: 20px;
             width: fit-content;
-            background: rgba(0,0,0,0.1);
+            background: rgba(0,0,0,0.2);
             backdrop-filter: blur(2px);
             margin-bottom: 6px;
             z-index: 5;
+            color: white;
         }
         .hashtag {
             font-size: 8px;
             font-weight: 700;
             letter-spacing: 0.6px;
             color: var(--gold);
-            background: rgba(0,0,0,0.25);
-            padding: 2px 8px;
+            background: rgba(0,0,0,0.3);
+            padding: 3px 10px;
             border-radius: 20px;
             width: fit-content;
             z-index: 5;
         }
 
         .unit-zone-title {
-            font-size: 32px;
+            font-size: 30px;
             font-weight: 800;
             margin: 12px 0 8px 0;
             letter-spacing: -0.5px;
-            text-shadow: 0 2px 5px rgba(0,0,0,0.2);
+            color: white;
+            text-shadow: 0 2px 4px rgba(0,0,0,0.3);
             z-index: 5;
         }
 
-        /* kotak huruf premium */
+        /* Kotak huruf: background HITAM, font PUTIH */
         .grid-row {
             display: flex;
             flex-wrap: wrap;
@@ -343,24 +356,24 @@
             margin-top: 4px;
         }
         .grid-cell {
-            background: white;
-            min-width: 42px;
-            height: 62px;
+            background: #000000;
+            min-width: 44px;
+            height: 64px;
             display: flex;
             align-items: center;
             justify-content: center;
-            border-radius: 16px;
-            font-size: 44px;
-            font-weight: 800;
-            color: #0A0F1C;
-            padding: 0 8px;
-            box-shadow: 0 12px 18px -8px rgba(0,0,0,0.25);
-            transition: all 0.1s;
+            border-radius: 18px;
+            font-size: 46px;
+            font-weight: 900;
+            color: white;
+            padding: 0 10px;
+            box-shadow: 0 12px 18px -6px rgba(0,0,0,0.4);
             text-transform: uppercase;
-            font-family: monospace;
+            font-family: 'Inter', monospace;
+            letter-spacing: 2px;
         }
 
-        /* PRINT CONFIGURATION A3 LANDSCAPE? tetap portrait A3 (297x420) 2x4 */
+        /* PRINT CONFIGURATION A3 (portrait) 2 kolom x 4 baris */
         #print-temp {
             position: absolute;
             left: -9999px;
@@ -382,20 +395,7 @@
             align-items: center;
             justify-content: center;
             background: #fff;
-            border: 0.3px dashed #e2e8f0;
-        }
-
-        /* Mascot alternatif (icon modern) */
-        .mascot-icon {
-            position: absolute;
-            bottom: -4mm;
-            left: -2mm;
-            width: 85px;
-            height: 85px;
-            opacity: 0.35;
-            font-size: 72px;
-            z-index: 2;
-            pointer-events: none;
+            border: 0.3px solid #e9eef3;
         }
 
         @media (max-width: 700px) {
@@ -411,7 +411,7 @@
     <div class="hero-header">
         <div class="brand">
             <h1><i class="fas fa-cube" style="color: var(--magenta); margin-right: 8px;"></i> Anteraja Studio</h1>
-            <p>Global Sticker Operation · Precision Logistics</p>
+            <p>Global Sticker Operation · Ultimate Precision</p>
         </div>
         <div class="staging-panel">
             <label><i class="fas fa-tag"></i> STAGING HUB</label>
@@ -432,7 +432,7 @@
     <div class="nav-bar">
         <button class="btn btn-add" id="addOneBtn"><i class="fas fa-plus-circle"></i> Tambah 1 Slot</button>
         <button class="btn btn-add" id="addEightBtn"><i class="fas fa-table-cells-large"></i> Tambah 8 Slot (Full A3)</button>
-        <button class="btn btn-print" id="btn-gen"><i class="fas fa-download"></i> Generate PDF — HighRes Sticker</button>
+        <button class="btn btn-print" id="btn-gen"><i class="fas fa-download"></i> Download PDF — Sticker Pro</button>
     </div>
 </div>
 
@@ -440,7 +440,7 @@
 
 <script>
     // --------------------------------------------------------------
-    // GLOBAL STATE
+    // STATE MANAGEMENT
     // --------------------------------------------------------------
     let nextId = 0;
     const inputContainer = document.getElementById('input-list');
@@ -458,14 +458,12 @@
         }
     }
 
-    // hapus slot
     function deleteSlot(slotId) {
         const el = document.getElementById(`item-${slotId}`);
         if(el) el.remove();
         updateEmptyState();
     }
 
-    // fungsi membuat card input baru
     function addSlot(quantity = 1) {
         for(let i = 0; i < quantity; i++) {
             nextId++;
@@ -482,19 +480,13 @@
             inputContainer.appendChild(card);
         }
         updateEmptyState();
-        // auto scroll ke bawah tipis
         setTimeout(() => {
             const lastCard = document.getElementById(`item-${nextId}`);
             if(lastCard) lastCard.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
         }, 80);
     }
 
-    // Hapus semua slot opsional (tidak wajib, tapi untuk kemudahan, bisa ditambahkan via tombol tersembunyi? 
-    // user tidak minta tapi akan lebih baik, kita tambahkan shortcut di console? Tapi lebih rapi: beri hidden? Tidak perlu.
-    // Saya beri tombol tambahan di footer? biar fleksibel, tapi tidak mengganggu UI. Baiknya kita tambahkan tombol "reset all"
-    // Tapi karena user minta upgrade tampilan, kita tambahkan tombol kecil di samping counter? akan elegan
-    const resetBtn = document.createElement('button');
-    // opsional, lebih baik ditambahkan secara subtle
+    // tombol reset all (opsional elegan)
     function addResetOption() {
         const headerFlex = document.querySelector('#input-list')?.previousElementSibling;
         if(headerFlex && !document.getElementById('resetAllBtn')) {
@@ -510,7 +502,7 @@
             resetBtnElem.style.cursor = 'pointer';
             resetBtnElem.style.color = '#475569';
             resetBtnElem.onclick = () => {
-                if(confirm('Hapus SEMUA kode unit? Tindakan ini tidak bisa dibatalkan.')) {
+                if(confirm('Hapus SEMUA kode unit? Tindakan tidak bisa dibatalkan.')) {
                     inputContainer.innerHTML = '';
                     nextId = 0;
                     updateEmptyState();
@@ -521,38 +513,37 @@
     }
 
     // --------------------------------------------------------------
-    // STICKER BUILDER (tanpa external image, full premium vector)
+    // STICKER BUILDER dengan logo BLHR02.png (atas) & BLHR01.png (siluet)
+    // Font: putih, kuning, hitam dalam box
     // --------------------------------------------------------------
     function buildStickerElement(stagingCode, zoneCode) {
         const stickerDiv = document.createElement('div');
         stickerDiv.className = 'sticker-canvas';
         
-        // split huruf uppercase, max 6 huruf untuk estetika
+        // Huruf kapital, max 6 karakter agar rapi
         let letters = zoneCode.toUpperCase().split('');
-        if(letters.length === 0) letters = [' '];
-        const cellsHtml = letters.map(ch => `<div class="grid-cell">${ch}</div>`).join('');
+        if(letters.length === 0) letters = ['•'];
+        const cellsHtml = letters.map(ch => `<div class="grid-cell">${escapeHtml(ch)}</div>`).join('');
         
-        // Mascot ikon modern (Fontawesome + emoji)
-        const mascotHtml = `<div class="mascot-icon"><i class="fas fa-dragon"></i></div>`;
+        // Menggunakan BLHR02.png untuk logo atas kanan
+        // BLHR01.png untuk siluet / maskot di kiri bawah
+        const logoTopHtml = `<div class="logo-box"><img src="BLHR02.png" class="logo-img-top" alt="Anteraja" onerror="this.src='data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%20100%2030%22%3E%3Ctext%20x%3D%225%22%20y%3D%2220%22%20fill%3D%22%23E2197C%22%3EAnteraja%3C%2Ftext%3E%3C%2Fsvg%3E'"></div>`;
+        const mascotHtml = `<div class="mascot-layer"><img src="BLHR01.png" alt="mascot" onerror="this.src='data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%2080%2080%22%3E%3Ccircle%20cx%3D%2240%22%20cy%3D%2240%22%20r%3D%2235%22%20fill%3D%22%23FFD966%22%2F%3E%3C%2Fsvg%3E'"></div>`;
         
         stickerDiv.innerHTML = `
             ${mascotHtml}
             <div class="branding-group">
-                <div class="logo-box">
-                    <i class="fas fa-truck-ramp-box"></i> 
-                    <span>ANTERAJA</span>
-                </div>
+                ${logoTopHtml}
                 <div class="staging-name">${escapeHtml(stagingCode)}</div>
             </div>
             <div class="delivery-pill">DELIVERY</div>
             <div class="hashtag">#PASTIBAWAHEPI • #JADIORANGBAIK</div>
             <div class="unit-zone-title">UNIT ZONE</div>
-            <div class="grid-row">${cellsHtml || '<div class="grid-cell">—</div>'}</div>
+            <div class="grid-row">${cellsHtml}</div>
         `;
         return stickerDiv;
     }
 
-    // helper escape
     function escapeHtml(str) {
         if(!str) return '';
         return str.replace(/[&<>]/g, function(m) {
@@ -564,13 +555,12 @@
     }
 
     // --------------------------------------------------------------
-    // GENERATE PDF SUPERIOR
+    // GENERATE PDF RESOLUSI TINGGI
     // --------------------------------------------------------------
     async function generatePDF() {
         const stagingRaw = document.getElementById('global-stg').value.trim();
         const staging = stagingRaw === "" ? "STAGING" : stagingRaw.toUpperCase();
         
-        // ambil semua kode dari input
         const inputs = document.querySelectorAll('.zone-val');
         let codes = Array.from(inputs).map(inp => inp.value.trim()).filter(v => v !== "");
         
@@ -589,7 +579,7 @@
         const tempDiv = document.getElementById('print-temp');
         tempDiv.innerHTML = '';
         
-        // proses chunk 8 sticker per halaman A3
+        // Membagi per 8 sticker per halaman A3
         for(let i = 0; i < codes.length; i += 8) {
             const pageDiv = document.createElement('div');
             pageDiv.className = 'a3-page';
@@ -602,7 +592,7 @@
                     const sticker = buildStickerElement(staging, chunk[j]);
                     cell.appendChild(sticker);
                 } else {
-                    // kosong elegant
+                    // Placeholder kosong elegant
                     const emptyBox = document.createElement('div');
                     emptyBox.style.width = '100%';
                     emptyBox.style.height = '100%';
@@ -612,7 +602,7 @@
                     emptyBox.style.justifyContent = 'center';
                     emptyBox.style.fontFamily = 'Inter';
                     emptyBox.style.color = '#CBD5E1';
-                    emptyBox.innerHTML = '<span style="font-size:12px; font-weight:500;">— placeholder —</span>';
+                    emptyBox.innerHTML = '<span style="font-size:12px; font-weight:500;">— empty slot —</span>';
                     cell.appendChild(emptyBox);
                 }
                 pageDiv.appendChild(cell);
@@ -620,13 +610,13 @@
             tempDiv.appendChild(pageDiv);
         }
         
-        // render dengan html2canvas resolusi tinggi (scale 3 untuk ketajaman)
+        // Render tiap halaman dengan scale tinggi
         for(let idx = 0; idx < tempDiv.children.length; idx++) {
             const pageElement = tempDiv.children[idx];
             try {
                 const canvas = await html2canvas(pageElement, {
-                    scale: 3,
-                    useCORS: false,
+                    scale: 3.2,
+                    useCORS: true,   // mengizinkan gambar cross-origin (jika gambar lokal, tetap aman)
                     logging: false,
                     backgroundColor: '#ffffff',
                     allowTaint: false,
@@ -637,7 +627,7 @@
                 if(idx !== 0) pdf.addPage();
                 pdf.addImage(imgData, 'JPEG', 0, 0, 297, 420, undefined, 'FAST');
             } catch(err) {
-                console.warn("render error", err);
+                console.warn("Render error pada halaman:", err);
             }
         }
         
@@ -650,14 +640,15 @@
     }
     
     // --------------------------------------------------------------
-    // INITIAL DEFAULT : 8 slot sesuai kebutuhan awal (seperti original)
+    // INITIALISASI
     // --------------------------------------------------------------
-    function initDefaultSlots() {
-        // jika tidak ada slot, tambah 8 (biar langsung fungsional)
+    window.deleteSlot = deleteSlot;
+    
+    function init() {
+        // Default 8 slot seperti kebutuhan awal
         if(document.querySelectorAll('.zone-card').length === 0) {
             for(let i=0; i<8; i++) addSlot(1);
         }
-        // event listener tambahan tombol
         const addOne = document.getElementById('addOneBtn');
         const addEight = document.getElementById('addEightBtn');
         const genBtn = document.getElementById('btn-gen');
@@ -670,32 +661,23 @@
         addResetOption();
     }
     
-    // Expose deleteSlot ke global
-    window.deleteSlot = deleteSlot;
-    
-    // Memastikan tombol event setelah load
     window.addEventListener('DOMContentLoaded', () => {
-        initDefaultSlots();
-        // tambahkan contoh placeholder jika kosong? tidak perlu, sudah 8 slot.
-        // Styling tambahan untuk input placeholder
+        init();
+        // tambahan styling dinamis
         const style = document.createElement('style');
         style.textContent = `
             .grid-cell {
                 word-break: keep-all;
+                transition: 0.1s ease;
             }
             .sticker-canvas .grid-row {
                 flex-wrap: wrap;
-            }
-            @media print {
-                body * { visibility: hidden; }
-                .a3-page, .a3-page * { visibility: visible; }
-                .a3-page { position: absolute; top:0; left:0; }
             }
         `;
         document.head.appendChild(style);
     });
     
-    // live update counter saat input dihapus / ditambah via tombol delete internal
+    // Observer untuk perubahan DOM
     const observer = new MutationObserver(() => updateEmptyState());
     observer.observe(inputContainer, { childList: true, subtree: false });
 </script>

@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Anteraja Sticker Pro - Startup Edition</title>
+    <title>Anteraja Studio - Professional Sticker Tool</title>
     
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
@@ -11,79 +11,67 @@
     
     <style>
         :root { 
-            --magenta-prime: #E2197C; 
-            --gold-accent: #FFD25E; 
-            --dark-ui: #1A1A1A;
-            --glass: rgba(255, 255, 255, 0.95);
+            --magenta: #E2197C; 
+            --gold: #FFD25E; 
+            --bg: #F3F4F6;
         }
 
-        * { box-sizing: border-box; -webkit-font-smoothing: antialiased; }
-        body { font-family: 'Plus Jakarta Sans', sans-serif; background: #F0F2F5; margin: 0; padding: 15px; color: var(--dark-ui); }
-        .container { max-width: 850px; margin: 0 auto; padding-bottom: 150px; }
+        * { box-sizing: border-box; }
+        body { font-family: 'Plus Jakarta Sans', sans-serif; background: var(--bg); margin: 0; padding: 15px; }
+        .container { max-width: 800px; margin: 0 auto; padding-bottom: 140px; }
 
-        /* Startup Dashboard Header */
-        .dashboard-card { background: white; border-radius: 24px; padding: 30px; box-shadow: 0 10px 40px rgba(0,0,0,0.06); margin-bottom: 25px; border: 1px solid rgba(0,0,0,0.05); }
-        .title-brand { font-weight: 800; font-size: 24px; letter-spacing: -1px; margin: 0; }
-        .title-brand span { color: var(--magenta-prime); }
+        /* Startup UI */
+        .header-card { background: white; border-radius: 20px; padding: 25px; box-shadow: 0 10px 30px rgba(0,0,0,0.05); margin-bottom: 20px; text-align: center; }
+        .input-hero { background: #1a1a1a; padding: 25px; border-radius: 20px; color: white; margin-bottom: 20px; }
+        .input-hero input { width: 100%; background: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.2); padding: 15px; border-radius: 12px; font-size: 20px; font-weight: 700; color: var(--gold); text-align: center; outline: none; }
 
-        .input-group-hero { background: var(--dark-ui); padding: 25px; border-radius: 20px; color: white; margin-bottom: 25px; }
-        .input-group-hero label { display: block; font-size: 11px; font-weight: 600; text-transform: uppercase; letter-spacing: 1.5px; margin-bottom: 10px; color: rgba(255,255,255,0.6); }
-        .input-group-hero input { width: 100%; background: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.2); padding: 15px; border-radius: 12px; font-size: 20px; font-weight: 700; color: var(--gold-accent); text-align: center; outline: none; }
+        .zone-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: 10px; }
+        .zone-card { background: white; padding: 15px; border-radius: 15px; border: 1px solid #ddd; position: relative; }
+        .zone-card input { width: 100%; border: none; border-bottom: 2px solid #eee; padding: 8px 0; font-size: 16px; font-weight: 800; outline: none; }
 
-        .zone-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(160px, 1fr)); gap: 12px; }
-        .zone-item { background: white; padding: 15px; border-radius: 16px; border: 1px solid #E5E7EB; position: relative; transition: 0.2s; }
-        .zone-item:focus-within { border-color: var(--magenta-prime); box-shadow: 0 0 0 4px rgba(226, 25, 124, 0.1); }
-        .zone-item input { width: 100%; border: none; font-size: 18px; font-weight: 800; padding: 8px 0; outline: none; border-bottom: 2px solid #F3F4F6; }
+        /* Navigation Bar */
+        .action-nav { position: fixed; bottom: 0; left: 0; right: 0; background: rgba(255,255,255,0.9); backdrop-filter: blur(10px); padding: 20px; display: flex; flex-direction: column; gap: 10px; z-index: 1000; box-shadow: 0 -10px 30px rgba(0,0,0,0.05); }
+        .btn { padding: 15px; border: none; border-radius: 12px; font-weight: 800; cursor: pointer; transition: 0.2s; }
+        .btn-add { background: #eee; color: #333; }
+        .btn-print { background: var(--magenta); color: white; font-size: 16px; box-shadow: 0 8px 20px rgba(226, 25, 124, 0.3); }
 
-        /* Navigation Bar Professional */
-        .nav-actions { position: fixed; bottom: 0; left: 0; right: 0; background: var(--glass); backdrop-filter: blur(15px); padding: 20px; box-shadow: 0 -10px 40px rgba(0,0,0,0.08); display: flex; flex-direction: column; gap: 10px; z-index: 1000; border-top: 1px solid rgba(0,0,0,0.05); }
-        .btn { padding: 16px; border: none; border-radius: 14px; font-weight: 700; cursor: pointer; transition: 0.3s; font-size: 14px; }
-        .btn-add { background: #F3F4F6; color: #374151; }
-        .btn-print { background: var(--magenta-prime); color: white; box-shadow: 0 8px 25px rgba(226, 25, 124, 0.3); font-size: 16px; }
-        .btn:active { transform: scale(0.98); }
-
-        /* =========================================
-           STICKER ARCHITECTURE (A6 Landscape)
-           ========================================= */
+        /* STICKER DESIGN (A6 Landscape) */
         .sticker-canvas {
-            width: 148mm; height: 105mm;
-            background: var(--magenta-prime);
-            position: relative; overflow: hidden; color: white;
-            padding: 10mm; display: flex; flex-direction: column;
+            width: 148mm; height: 105mm; background: var(--magenta);
+            position: relative; overflow: hidden; color: white; padding: 10mm;
+            display: flex; flex-direction: column;
         }
 
-        /* Logo Utama & Staging Sub-label */
-        .branding-header {
+        /* Logo Utama & Nama Staging Kuning */
+        .branding-box {
             position: absolute; top: 8mm; right: 8mm;
-            background: white; padding: 8px 16px; border-radius: 12px;
-            border: 3.5px solid var(--magenta-prime); z-index: 100;
-            display: flex; flex-direction: column; align-items: center; gap: 2px;
-            box-shadow: 0 6px 15px rgba(0,0,0,0.15);
+            background: white; padding: 8px 15px; border-radius: 10px;
+            border: 3px solid var(--magenta); z-index: 100;
+            display: flex; flex-direction: column; align-items: center;
         }
-        .logo-main { height: 10mm; }
-        .staging-label { color: var(--magenta-prime); font-weight: 900; font-size: 14px; text-transform: uppercase; background: var(--gold-accent); padding: 2px 8px; border-radius: 4px; }
+        .logo-img { height: 10mm; margin-bottom: 2px; }
+        .staging-label { color: var(--magenta); font-weight: 900; font-size: 13px; text-transform: uppercase; background: var(--gold); padding: 2px 8px; border-radius: 4px; }
 
-        /* Mascot Besar (Wajah Terlihat) di Belakang */
-        .mascot-bg-circle {
-            position: absolute; bottom: -5mm; right: 10mm;
-            width: 80mm; height: 80mm; border-radius: 50%;
-            overflow: hidden; opacity: 0.45; /* Lebih tebal agar wajah terlihat */
-            z-index: 1; display: flex; align-items: center; justify-content: center;
+        /* Mascot Besar (Transparan Belakang) */
+        .mascot-bg {
+            position: absolute; bottom: -5mm; right: 5mm;
+            width: 85mm; height: 85mm; border-radius: 50%;
+            overflow: hidden; opacity: 0.4; z-index: 1;
+            display: flex; align-items: center; justify-content: center;
         }
-        .mascot-bg-circle img { width: 100%; height: 100%; object-fit: cover; }
+        .mascot-bg img { width: 100%; height: 100%; object-fit: cover; }
 
-        .delivery-tag { border: 3px solid white; padding: 5px 25px; border-radius: 50px; font-weight: 900; font-size: 26px; width: fit-content; margin-bottom: 2mm; }
-        .unit-zone-title { font-size: 42px; font-weight: 800; margin: 10mm 0 5mm 0; z-index: 10; letter-spacing: -1px; }
+        .delivery-badge { border: 3px solid white; padding: 5px 25px; border-radius: 50px; font-weight: 900; font-size: 26px; width: fit-content; margin-bottom: 3mm; }
+        .unit-title { font-size: 42px; font-weight: 800; margin: 10mm 0 5mm 0; z-index: 10; letter-spacing: -1px; }
 
         .grid-row { display: flex; gap: 8px; z-index: 10; }
         .grid-cell {
-            min-width: 22mm; height: 35mm; background: white; border-radius: 10px;
+            min-width: 22mm; height: 35mm; background: white; border-radius: 8px;
             display: flex; align-items: center; justify-content: center;
-            color: #111; font-size: 85px; font-weight: 800; padding: 0 6mm;
-            box-shadow: 0 6px 12px rgba(0,0,0,0.12);
+            color: #111; font-size: 85px; font-weight: 800; padding: 0 5mm;
         }
 
-        /* PRINT CONFIG */
+        /* PRINT SETTINGS */
         #print-container { position: absolute; left: -9999px; }
         .a3-page { width: 297mm; height: 420mm; display: grid; grid-template-columns: 1fr 1fr; grid-template-rows: repeat(4, 1fr); background: white; }
         .print-cell { display: flex; align-items: center; justify-content: center; }
@@ -92,81 +80,71 @@
 <body>
 
 <div class="container">
-    <div class="dashboard-card">
-        <h1 class="title-brand">Anteraja <span>Studio</span></h1>
-        <p style="color:#6B7280; font-size: 14px; margin: 5px 0 0 0;">Leader Dashboard Staging BLHR0</p>
+    <div class="header-card">
+        <h1 style="margin:0; font-weight:800;">Anteraja <span style="color:var(--magenta)">Studio</span></h1>
     </div>
 
-    <div class="input-group-hero">
-        <label>Nama Staging (Diterapkan Otomatis)</label>
-        <input type="text" id="staging-val" value="BLHR0" placeholder="Contoh: WONOSARI">
+    <div class="input-hero">
+        <label style="font-size:11px; opacity:0.6; display:block; margin-bottom:8px;">NAMA STAGING (AUTO-UPDATE)</label>
+        <input type="text" id="stg-name" value="BLHR0">
     </div>
 
     <div id="input-list" class="zone-grid"></div>
 
-    <div class="nav-actions">
-        <div style="display:grid; grid-template-columns: 1fr 1fr; gap:12px;">
-            <button class="btn btn-add" onclick="addBox(1)">+ Satu Sticker</button>
-            <button class="btn btn-add" onclick="addBox(8)">+ 8 Sticker (Halaman)</button>
+    <div class="action-nav">
+        <div style="display:grid; grid-template-columns:1fr 1fr; gap:10px;">
+            <button class="btn btn-add" onclick="addSlot(1)">+ TAMBAH 1</button>
+            <button class="btn btn-add" onclick="addSlot(8)">+ TAMBAH 8</button>
         </div>
-        <button class="btn btn-print" id="btn-dl" onclick="processPDF()">📥 Generate High-Res PDF (A3)</button>
+        <button class="btn btn-print" id="btn-p" onclick="generatePDF()">📥 GENERATE A3 PDF</button>
     </div>
 </div>
 
 <div id="print-container"></div>
 
 <script>
-    let boxId = 0;
-
-    function addBox(n) {
+    let id = 0;
+    function addSlot(n) {
         const list = document.getElementById('input-list');
         for(let i=0; i<n; i++) {
-            boxId++;
+            id++;
             const div = document.createElement('div');
-            div.className = 'zone-item';
-            div.id = `item-${boxId}`;
+            div.className = 'zone-card';
+            div.id = `slot-${id}`;
             div.innerHTML = `
-                <button style="position:absolute; top:8px; right:8px; border:none; background:none; cursor:pointer; color:#EF4444;" onclick="document.getElementById('item-${boxId}').remove()">✕</button>
-                <label style="font-size:10px; font-weight:700; color:#9CA3AF; margin-bottom:5px; display:block;">UNIT #${boxId}</label>
-                <input type="text" class="unit-code" placeholder="KODE...">
+                <button style="position:absolute; top:5px; right:5px; border:none; background:none; color:red; cursor:pointer;" onclick="document.getElementById('slot-${id}').remove()">✕</button>
+                <input type="text" class="u-input" placeholder="KODE...">
             `;
             list.appendChild(div);
         }
     }
 
-    function generateSticker(staging, code) {
+    function createSticker(staging, code) {
         const div = document.createElement('div');
         div.className = 'sticker-canvas';
-        const chars = code.toUpperCase().split('');
-        const gridHtml = chars.map(c => `<div class="grid-cell">${c}</div>`).join('');
-
+        const cells = code.toUpperCase().split('').map(c => `<div class="grid-cell">${c}</div>`).join('');
+        
         div.innerHTML = `
-            <div class="branding-header">
-                <img src="BLHR02.png" class="logo-main">
+            <div class="branding-box">
+                <img src="BLHR02.png" class="logo-img">
                 <div class="staging-label">${staging}</div>
             </div>
-
-            <div class="maskot-bg-circle">
-                <img src="BLHR01.png">
-            </div>
-
-            <div class="delivery-tag">DELIVERY</div>
-            <div style="font-size:10px; font-weight:700; opacity:0.8; letter-spacing:1px;">#PASTIBAWAHEPI • #JADIORANGBAIK</div>
-
-            <div class="unit-zone-title">UNIT ZONE</div>
-            <div class="grid-row">${gridHtml || '<div class="grid-cell">&nbsp;</div>'}</div>
+            <div class="mascot-bg"><img src="BLHR01.png"></div>
+            <div class="delivery-badge">DELIVERY</div>
+            <div style="font-size:10px; font-weight:700; opacity:0.8;">#PASTIBAWAHEPI • #JADIORANGBAIK</div>
+            <div class="unit-title">UNIT ZONE</div>
+            <div class="grid-row">${cells || '<div class="grid-cell">&nbsp;</div>'}</div>
         `;
         return div;
     }
 
-    async function processPDF() {
-        const staging = document.getElementById('staging-val').value;
-        const codes = Array.from(document.querySelectorAll('.unit-code')).map(i => i.value).filter(v => v !== "");
-        
-        if(codes.length === 0) return alert("Masukkan minimal satu kode unit!");
+    async function generatePDF() {
+        const staging = document.getElementById('stg-name').value;
+        const codes = Array.from(document.querySelectorAll('.u-input')).map(i => i.value).filter(v => v !== "");
+        if(codes.length === 0) return alert("Isi kode dulu!");
 
-        const btn = document.getElementById('btn-dl');
-        btn.innerText = "⏳ Sedang Me-render...";
+        const btn = document.getElementById('btn-p');
+        btn.innerText = "⏳ PROCESSING...";
         btn.disabled = true;
 
         const { jsPDF } = window.jspdf;
@@ -177,29 +155,25 @@
             container.innerHTML = '';
             const page = document.createElement('div');
             page.className = 'a3-page';
-            
             const chunk = codes.slice(i, i + 8);
             for (let j = 0; j < 8; j++) {
                 const cell = document.createElement('div');
                 cell.className = 'print-cell';
-                if(chunk[j]) cell.appendChild(generateSticker(staging, chunk[j]));
+                if(chunk[j]) cell.appendChild(createSticker(staging, chunk[j]));
                 page.appendChild(cell);
             }
-            
             container.appendChild(page);
             const canvas = await html2canvas(page, { scale: 2, useCORS: true });
-            
             if (i > 0) pdf.addPage();
             pdf.addImage(canvas.toDataURL('image/jpeg', 0.95), 'JPEG', 0, 0, 297, 420);
         }
 
-        pdf.save(`Sticker_Anteraja_${staging}.pdf`);
-        btn.innerText = "📥 Generate High-Res PDF (A3)";
+        pdf.save(`Sticker_${staging}.pdf`);
+        btn.innerText = "📥 GENERATE A3 PDF";
         btn.disabled = false;
         container.innerHTML = '';
     }
-
-    addBox(8);
+    addSlot(8);
 </script>
 </body>
 </html>

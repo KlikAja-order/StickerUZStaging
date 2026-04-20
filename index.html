@@ -152,40 +152,55 @@
     }
 
     async function generatePDF() {
-        const staging = document.getElementById('global-stg').value;
-        const codes = Array.from(document.querySelectorAll('.zone-val')).map(i => i.value).filter(v => v !== "");
-        if(codes.length === 0) return alert("Silakan isi kode zona!");
+    const staging = document.getElementById('global-stg').value;
+    const codes = Array.from(document.querySelectorAll('.zone-val')).map(i => i.value).filter(v => v !== "");
+    if(codes.length === 0) return alert("Silakan isi kode zona!");
 
-        const btn = document.getElementById('btn-gen');
-        btn.innerText = "⏳ RENDERING PDF...";
-        btn.disabled = true;
+    const btn = document.getElementById('btn-gen');
+    btn.innerText = "⏳ RENDERING HD PDF...";
+    btn.disabled = true;
 
-        const { jsPDF } = window.jspdf;
-        const pdf = new jsPDF({ orientation: 'p', unit: 'mm', format: 'a3' });
-        const temp = document.getElementById('print-temp');
+    const { jsPDF } = window.jspdf;
+    // Gunakan compress: true untuk menjaga ukuran file tetap masuk akal meskipun resolusi tinggi
+    const pdf = new jsPDF({ orientation: 'p', unit: 'mm', format: 'a3', compress: true });
+    const temp = document.getElementById('print-temp');
 
-        for (let i = 0; i < codes.length; i += 8) {
-            temp.innerHTML = '';
-            const page = document.createElement('div');
-            page.className = 'a3-page';
-            const chunk = codes.slice(i, i + 8);
-            for (let j = 0; j < 8; j++) {
-                const slot = document.createElement('div');
-                slot.className = 'print-cell';
-                if(chunk[j]) slot.appendChild(buildSticker(staging, chunk[j]));
-                page.appendChild(slot);
-            }
-            temp.appendChild(page);
-            const canvas = await html2canvas(page, { scale: 2, useCORS: true });
-            if (i > 0) pdf.addPage();
-            pdf.addImage(canvas.toDataURL('image/jpeg', 0.95), 'JPEG', 0, 0, 297, 420);
-        }
-
-        pdf.save(`Produksi_Sticker_${staging}.pdf`);
-        btn.innerText = "📥 DOWNLOAD PDF A3 PRODUKSI";
-        btn.disabled = false;
+    for (let i = 0; i < codes.length; i += 8) {
         temp.innerHTML = '';
+        const page = document.createElement('div');
+        page.className = 'a3-page';
+        const chunk = codes.slice(i, i + 8);
+        
+        for (let j = 0; j < 8; j++) {
+            const slot = document.createElement('div');
+            slot.className = 'print-cell';
+            if(chunk[j]) slot.appendChild(buildSticker(staging, chunk[j]));
+            page.appendChild(slot);
+        }
+        
+        temp.appendChild(page);
+
+        // --- PERUBAHAN UTAMA DI SINI ---
+        const canvas = await html2canvas(page, { 
+            scale: 4,           // Tingkatkan ke 4 agar hasil tajam (HD)
+            useCORS: true,      // Penting agar gambar dari GitHub/Server tidak hilang
+            logging: false,     // Matikan log untuk kecepatan
+            letterRendering: true, // Meningkatkan ketajaman teks
+            allowTaint: false
+        });
+
+        if (i > 0) pdf.addPage();
+        
+        // Gunakan format PNG atau JPEG dengan kualitas 1.0 (maksimal)
+        const imgData = canvas.toDataURL('image/jpeg', 1.0);
+        pdf.addImage(imgData, 'JPEG', 0, 0, 297, 420, undefined, 'FAST');
     }
+
+    pdf.save(`Produksi_HD_Sticker_${staging}.pdf`);
+    btn.innerText = "📥 DOWNLOAD PDF A3 PRODUKSI";
+    btn.disabled = false;
+    temp.innerHTML = '';
+}
     addSlot(8);
 </script>
 </body>
